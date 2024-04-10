@@ -1,0 +1,3 @@
+- op: replace
+  path: /apiVersion
+  value: tekton.dev/v1

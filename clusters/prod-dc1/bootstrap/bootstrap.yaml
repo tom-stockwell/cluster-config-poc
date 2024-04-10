@@ -1,9 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gitops
+  name: bootstrap
   labels:
-    app: gitops
+    app: bootstrap
 spec:
   project: default
   source:
@@ -13,3 +13,11 @@ spec:
 
   destination:
     name: in-cluster
+
+  syncPolicy:
+    automated:
+#      prune: true
+      selfHeal: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=true

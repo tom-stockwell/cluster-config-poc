@@ -1,9 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-b
+  name: operator-instance
   labels:
-    app: app-b
+    app: operator-instance
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/tom-stockwell/cluster-config-poc.git
     targetRevision: HEAD
-    path: apps/app-b/overlays/prod
+    path: apps/operator-instance
 
   destination:
     name: in-cluster
@@ -23,3 +23,4 @@ spec:
     syncOptions:
       - RespectIgnoreDifferences=true
       - ApplyOutOfSyncOnly=true
+      - SkipDryRunOnMissingResource=true

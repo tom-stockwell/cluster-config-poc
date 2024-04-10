@@ -4,3 +4,5 @@ resources:
   - app-a.yaml
   - app-b.yaml
   - app-c.yaml
+  - operator.yaml
+  - operator-instance.yaml
