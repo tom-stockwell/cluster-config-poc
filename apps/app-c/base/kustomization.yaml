@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: app-b
+resources:
+  - ../../remote-base
+configMapGenerator:
+  - name: config
+    behavior: merge
+    literals:
+      - app=app-c
