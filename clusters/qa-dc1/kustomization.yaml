@@ -4,7 +4,7 @@ namespace: openshift-gitops
 
 labels:
   - pairs:
-      cluster: prod-dc1
+      cluster: qa-dc1
 
 resources:
   - bootstrap
@@ -14,7 +14,7 @@ resources:
 components:
   - ../../groups/all
   - ../../groups/platform
-  - ../../groups/prod
+  - ../../groups/qa
   - ../../groups/dc1
 
 patches:

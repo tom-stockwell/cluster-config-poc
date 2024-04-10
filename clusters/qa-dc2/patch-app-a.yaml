@@ -1,0 +1,7 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-a
+spec:
+  source:
+    path: apps/app-a/overlays/qa-dc2

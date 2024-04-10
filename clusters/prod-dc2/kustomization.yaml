@@ -4,18 +4,16 @@ namespace: openshift-gitops
 
 labels:
   - pairs:
-      cluster: prod-dc1
+      cluster: prod-dc2
 
 resources:
   - bootstrap
-  - operator.yaml
-  - operator-instance.yaml
 
 components:
   - ../../groups/all
   - ../../groups/platform
   - ../../groups/prod
-  - ../../groups/dc1
+  - ../../groups/dc2
 
 patches:
   - path: patch-app-a.yaml

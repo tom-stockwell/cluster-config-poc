@@ -1,22 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-a
+  name: bootstrap
   labels:
-    app: app-a
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    app: bootstrap
 spec:
   project: default
   source:
     repoURL: https://github.com/tom-stockwell/cluster-config-poc.git
     targetRevision: HEAD
-    path: apps/app-a/overlays/prod-dc1
+    path: clusters/qa-dc2
+
   destination:
     name: in-cluster
+
   syncPolicy:
     automated:
-      prune: true
+#      prune: true
       selfHeal: true
     syncOptions:
       - RespectIgnoreDifferences=true

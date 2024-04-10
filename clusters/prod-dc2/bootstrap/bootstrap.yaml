@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap
+  labels:
+    app: bootstrap
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tom-stockwell/cluster-config-poc.git
+    targetRevision: HEAD
+    path: clusters/prod-dc2
+
+  destination:
+    name: in-cluster
+
+  syncPolicy:
+    automated:
+#      prune: true
+      selfHeal: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=true

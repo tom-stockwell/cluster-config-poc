@@ -1,9 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-b
+  name: app-a
   labels:
-    app: app-b
+    app: app-a
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -11,11 +11,9 @@ spec:
   source:
     repoURL: https://github.com/tom-stockwell/cluster-config-poc.git
     targetRevision: HEAD
-    path: apps/app-b/overlays/prod
-
+    path: apps/app-a/overlays/<cluster>
   destination:
     name: in-cluster
-
   syncPolicy:
     automated:
       prune: true
