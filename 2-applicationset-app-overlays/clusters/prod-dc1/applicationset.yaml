@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: prod-dc1-apps
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: https://github.com/tom-stockwell/cluster-config-poc.git
+        revision: HEAD
+        directories:
+          - path: 'apps/*/overlays/all'
+          - path: 'apps/*/overlays/platform'
+          - path: 'apps/*/overlays/prod'
+          - path: 'apps/*/overlays/prod-dc1'
+  template:
+    metadata:
+      name: 'prod-dc1-{{ index .path.segments 1 }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/tom-stockwell/cluster-config-poc.git
+        targetRevision: HEAD
+        path: '{{ .path.path }}'
+      destination:
+        name: in-cluster
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - RespectIgnoreDifferences=true
+          - ApplyOutOfSyncOnly=true
