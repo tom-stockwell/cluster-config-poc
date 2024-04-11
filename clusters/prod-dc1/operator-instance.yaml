@@ -4,8 +4,6 @@ metadata:
   name: operator-instance
   labels:
     app: operator-instance
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:

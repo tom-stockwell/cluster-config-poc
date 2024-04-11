@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-resource-exists
+spec:
+  template:
+    spec:
+      containers:
+        - name: check-operator
+          env:
+            - name: RESOURCE
+              value: customresourcedefinition.apiextensions.k8s.io/tasks.tekton.dev

@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-resource-exists
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
+spec:
+  template:
+    spec:
+      containers:
+        - name: check-operator
+          image: registry.redhat.io/openshift4/ose-cli
+          env:
+            - name: RESOURCE
+              value: __PATCH__
+            - name: SLEEP_TIMER
+              value: '10'
+            - name: MAX_RETRY
+              value: '20'
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/usr/bin/env bash
+
+              IFS=" " read -r -a oc_args <<< "$OC_ARGS"
+  
+              echo "Starting resource checker"
+              echo "Waiting for $RESOURCE to exist."
+              
+              counter=0
+              until oc get "${oc_args[@]}" "$RESOURCE" > /dev/null 2>&1; do
+            
+                # Limit the number of attempts
+                (( counter++ )) || true
+                echo
+                echo "Attempt $counter/$MAX_RETRY: Not found."
+              
+                if [[ "$counter" -eq "$MAX_RETRY" ]]; then
+                  >&2 echo "Giving up. $RESOURCE not available."
+                  exit 1
+                fi
+              
+                # Wait between attempts
+                echo -n "Sleeping"
+                sleep_counter=0
+                while [[ "$sleep_counter" -le "$SLEEP_TIMER" ]]; do
+                  echo -n "."
+                  sleep 1
+                  (( sleep_counter++ )) || true
+                done
+                echo
+              done
+              
+              echo "$RESOURCE found!"
+      restartPolicy: Never
+      serviceAccountName: resource-checker
