@@ -5,3 +5,4 @@ resources:
 components:
   - components/health-check-argocd-application
   - components/sync-wave-delay
+  - components/progressive-syncs

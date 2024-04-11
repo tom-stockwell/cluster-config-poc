@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pause
+spec:
+  template:
+    spec:
+      containers:
+        - name: pause
+          image: registry.redhat.io/openshift4/ose-cli
+          env:
+            - name: SLEEP_TIME
+              value: '10'
+          command:
+            - /bin/bash
+            - -c
+            - sleep $SLEEP_TIME
+      restartPolicy: Never

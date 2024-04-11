@@ -10,13 +10,22 @@ spec:
         repoURL: https://github.com/tom-stockwell/cluster-config-poc.git
         revision: HEAD
         directories:
-          - path: 'apps/*/overlays/all'
-          - path: 'apps/*/overlays/platform'
-          - path: 'apps/*/overlays/prod'
-          - path: 'apps/*/overlays/prod-dc1'
+          - path: apps/*/overlays/all
+          - path: apps/*/overlays/platform
+          - path: apps/*/overlays/prod
+          - path: apps/*/overlays/prod-dc1
+          - path: apps/operator
+          - path: apps/operator-instance
+        values:
+          app: '{{ index .path.segments 1 }}'
   template:
     metadata:
-      name: 'prod-dc1-{{ index .path.segments 1 }}'
+      name: 'prod-dc1-{{ .values.app }}'
+      labels:
+        env: prod
+        dc: dc1
+        cluster: prod-dc1
+        app: '{{ .values.app }}'
     spec:
       project: default
       source:
@@ -32,3 +41,28 @@ spec:
         syncOptions:
           - RespectIgnoreDifferences=true
           - ApplyOutOfSyncOnly=true
+  strategy:
+    type: RollingSync
+    rollingSync:
+      steps:
+        - matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - app-a
+                - operator
+        - matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - operator-instance
+
+        # need to explicitly exclude previously matching apps
+        # otherwise they all seem to just pause...
+        - matchExpressions:
+            - key: app
+              operator: NotIn
+              values:
+                - app-a
+                - operator
+                - operator-instance

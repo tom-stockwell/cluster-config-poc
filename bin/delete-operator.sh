@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-oc delete application -n openshift-gitops bootstrap operator operator-instance
 oc delete tektonconfig config
 sleep 10
 oc get tektoninstallersets -o name | xargs oc delete
