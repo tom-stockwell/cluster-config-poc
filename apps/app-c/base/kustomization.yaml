@@ -8,3 +8,4 @@ configMapGenerator:
     behavior: merge
     literals:
       - app=app-c
+      - test=change
